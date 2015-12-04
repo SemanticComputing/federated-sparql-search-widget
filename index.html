@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Federated SPARQL Search Widget</title>
+
+<!-- Bootstrap v3.3.4, compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Custom styles -->
+<link rel="stylesheet" href="styles2.css">
+
+</head>
+<body>
+
+<div id="main-content" class="container">
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="row">
+			<div class="col-md-4">
+			
+			<div id="datasets" class="hipla-only">
+		 
+			  	<h4 id="selection-title"></h4>
+
+			    <div class="row" id="dataset-warsa">
+				    <div class="checkbox pull-left">
+					  <label>
+					    <input id="check-warsa" type="checkbox" value="">
+					  </label>
+					</div>
+				    <div class="dropdown pull-left hipla-only">
+						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a id="warsa-all" role="button">View all places on current map view</a></li>
+						    <li><a href="http://vocab.at/page/bbAl4" target="_blank">Automatic dataset documentation</a></li>
+						  </ul>
+					</div>
+				    <img class="marker_icon pull-left" src="img/warsa-polygon.png" alt=""> 
+				    <div id="title-warsa" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title=""></div> 
+			    </div>
+			    
+			    <div class="row" id="dataset-karelian">
+				    <div class="checkbox pull-left">
+					  <label>
+					    <input id="check-karelian" type="checkbox" value="">
+					  </label>
+					</div>
+				    <div class="dropdown pull-left hipla-only">
+						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a id="karelian-all" role="button">View all places on current map view</a></li>
+						  </ul>
+					</div>
+				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt=""> 
+				    <div id="title-karelian" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Karelian places 1922-1944 (~32 000 places)"></div>
+			    </div>
+			    
+<!-- 			     <div class="row" id="dataset-karelian-20000"> -->
+				    
+<!-- 				    <div class="checkbox pull-left"> -->
+<!-- 					  <label> -->
+<!-- 					    <input id="check-karelian-20000" type="checkbox" value=""> -->
+<!-- 					  </label> -->
+<!-- 					</div> -->
+				    
+<!-- 				    <div class="dropdown pull-left"> -->
+<!-- 						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> -->
+<!-- 						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> -->
+<!-- 						  </button> -->
+<!-- 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> -->
+						    
+<!-- 						  </ul> -->
+<!-- 					</div> -->
+				    
+				    
+<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="">  -->
+<!-- 				    <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Karelian places 1:20000">Karelian places 1:20 000</div> -->
+
+<!-- 			    </div> -->
+			    
+<!-- 			    <div class="row" id="dataset-karelian-100000"> -->
+				    
+<!-- 				    <div class="checkbox pull-left"> -->
+<!-- 					  <label> -->
+<!-- 					    <input id="check-karelian-100000" type="checkbox" value=""> -->
+<!-- 					  </label> -->
+<!-- 					</div> -->
+				    
+<!-- 				    <div class="dropdown pull-left"> -->
+<!-- 						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> -->
+<!-- 						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> -->
+<!-- 						  </button> -->
+<!-- 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> -->
+						    
+<!-- 						  </ul> -->
+<!-- 					</div> -->
+				    
+				    
+<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/red-dot.png" alt="">  -->
+<!-- 				    <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Karelian places 1:100 000">Karelian places 1:100 000</div> -->
+
+<!-- 			    </div> -->
+			    
+			    
+			    
+			   
+			    <div class="row" id="dataset-pnr">
+				    
+				    <div class="checkbox pull-left">
+					  <label>
+					    <input id="check-pnr" type="checkbox" value="">
+					  </label>
+					</div>
+				    
+				    <div class="dropdown pull-left hipla-only">
+						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+<!-- 						    <li><a id="" role="button">View all places on map</a></li> -->
+<!-- 						    <li><a href="" target="_blank">Automatic dataset documentation</a></li> -->
+						  </ul>
+					</div>
+				    
+				    
+				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" alt=""> 
+				    <div id="title-pnr" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Finnish Geographic Names Registry (~800 000 places)"></div>
+	
+				    
+				 
+			    </div>
+			   
+
+			    <div class="row hipla-only" id="dataset-sapo">
+				    <div class="checkbox pull-left">
+					  <label>
+					    <input id="check-sapo" type="checkbox" value="">
+					  </label>
+					</div>
+				    
+				    <div class="dropdown pull-left">
+						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a id="sapo-all" role="button">View all places on map (only places that have a polygon on 1939-12-31)</a></li>
+						    <li><a href="http://vocab.at/page/bbzvD" target="_blank">Automatic dataset documentation</a></li>
+						  </ul>
+					</div>
+				    
+				    <img class="marker_icon pull-left" src="img/sapo-polygon.png" alt=""> 
+				   <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Finnish Spatio-Temporal Ontology (SAPO)">SAPO</div>
+			    </div>
+			   
+<!-- 			   	<div class="row hipla-only" id="dataset-tgn"> -->
+				    
+<!-- 				    <div class="checkbox pull-left"> -->
+<!-- 					  <label> -->
+<!-- 					    <input id="check-tgn" type="checkbox" value=""> -->
+<!-- 					  </label> -->
+<!-- 					</div> -->
+				    
+<!-- 				     <div class="dropdown pull-left"> -->
+<!-- 						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> -->
+<!-- 						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> -->
+<!-- 						  </button> -->
+<!-- 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> -->
+<!-- 						    <li><a id=tgn-all" role="button">View all places on current map view</a></li> -->
+<!-- <!-- 						    <li><a href="http://vocab.at/page/bbzBw" target="_blank">Automatic dataset documentation</a></li> --> 
+<!-- 						  </ul> -->
+<!-- 					</div> -->
+				    
+<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/orange-dot.png" alt="">  -->
+<!-- 				    <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="TGN">TGN</div> -->
+<!-- 			    </div> -->
+			   
+			   
+			   <div class="row hipla-only" id="dataset-suggested">
+				    
+				    <div class="checkbox pull-left">
+					  <label>
+					    <input id="check-suggested" type="checkbox" value="">
+					  </label>
+					</div>
+				    
+				     <div class="dropdown pull-left">
+						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a id="suggested-all" role="button">View all places on current map view</a></li>
+						    <li><a href="http://vocab.at/page/bbzBw" target="_blank">Automatic dataset documentation</a></li>
+						  </ul>
+					</div>
+				    
+				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/purple-dot.png" alt=""> 
+				    <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Place suggestions from users">Suggested places</div>
+			    </div>
+
+	   		
+
+	
+				</div>	<!-- /#datasets -->
+		
+		
+		
+		
+		
+		
+		
+		
+			<label id="search-only-with-links" class="checkbox-inline">
+  					<input type="checkbox" id="check-search-only-with-links" value="">
+			</label>
+			<div id="#tt-wrapper">
+				<input id="search-input" class="form-control typeahead" type="text" placeholder="Type a place name" name="search-input" >
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Bootstrap v3.3.4, compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<!-- typeahead.js 0.11.1 -->
+<script src="js/typeahead.jquery.js"></script>
+
+<!-- Custom JavaScript  -->
+<script src="scripts2.js"></script>
+
+</body>
+</html>

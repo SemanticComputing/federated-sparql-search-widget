@@ -1,0 +1,111 @@
+.twitter-typeahead, .tt-input {
+	width:100%;	
+	
+}
+
+#main-content {
+	margin-top:30px;
+	
+}
+
+.tt-menu {  
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 12px;
+    padding: 8px 0;
+    width:100%;
+    text-align: left;
+/* 	max-height: 600px; */ 
+/* 	max-height: 400px; */
+ 	max-height: 600px; 
+	overflow-y: auto;
+
+	/*cursor: pointer;*/ 
+}
+
+.tt-menu .row, #datasets .row {  
+	margin-right:0px;
+	margin-left:0px;
+	/*white-space:nowrap;*/
+}
+
+.tt-menu a { 
+	color: #333;	
+}
+
+.typeahead-header {
+	margin: 8px 10px 5px 10px;
+
+	padding: 3px 0;
+	border-bottom: 1px solid #ccc;
+	font-size:20px;
+	font-weight:bold;
+}
+
+.tt-suggestion {
+    font-size: 16px;
+    line-height: 22px;
+  /* padding-left:10px;*/
+    margin-top:0px;
+    margin-bottom:0px;
+    /*padding-top: 6px;*/
+    /*padding-bottom: 6px; */
+    /*padding: 3px 20px;*/
+}
+
+.result-text {
+	margin-left:10px;
+}
+
+.empty-message {
+	 padding-left:10px;
+			
+}
+
+input[type="checkbox"]{
+  width: 20px; 
+  height: 20px;
+  cursor:pointer;
+}
+
+#search-only-with-links {
+	margin-top:10px;	
+	margin-bottom:10px;
+}
+
+#check-search-only-with-links {
+  width: 18px; 
+  height: 18px;
+  margin-top:2px;
+  
+
+}
+
+
+
+#datasets .checkbox {
+	margin-bottom: 0px;
+	margin-top:-2px;
+	margin-right:6px;
+	
+}
+
+#datasets .marker_icon {
+	width: 25px; 
+  	height: 25px;
+  	margin-left:6px;
+  	margin-right:6px;
+  	margin-top:-2px;
+}
+
+#datasets .row {
+	margin-bottom: 10px;
+}
+
+.dataset-title {
+/* 	/margin-bottom:-10px; */
+	line-height: 1.8;
+/* 	width:240px; */
+}
