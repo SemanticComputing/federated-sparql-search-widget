@@ -22,8 +22,7 @@ var warsaMode;
 //Source dataset selections
 var sources = {};
 
-var strings = {
-	
+var strings = {	
 		warsaMunicipalities: "Finnish municipalities 1939-44",
 		warsaMunicipalitiesLong : "Finnish municipalities 1939-44 (625 municipalities)",
 		karelianPlaces : "Karelian map names 1922-44",
@@ -48,44 +47,6 @@ var strings = {
 		tabSearchPlaces: "Search places",
 		tabSearchMaps: "Maps",
 		searchPlaceholder: "Type at least two letters, e.g. Kivennapa",	
-		
-		mapHelp: "Use the checkboxes to select maps that intersect" +
-				"the current map view. The opacity of the historical " +
-				"map can be controlled with the slider on the top right corner " +
-				"of the screen.",
-		mapAllSeries: "All map series ",
-		mapSenateAtlas: "Senate atlas",
-		mapKarelianAtlas: "Karelian maps",
-		map100000topographic: "1:100 000 topographic",
-		map20000topographic: "1:20 000 topographic",
-		mapRefresh: " Refresh map list",
-		mapSelectAll : " select all",
-		
-		instuctionsTitle : "",
-		//(625 kpl) (32 402 kpl)
-		instructionsP1 : "" +
-				"" +
-				"",
-		instructionsP2 : "" +
-				"" +
-				"" +
-				"" +
-				"",
-				
-		alertModalSetZoom : "Set map zoom level to 12",		
-		close : "Close",	
-		alertModalWarning: " dataset is too large for viewing all places " +
-		"at current zoom level. The zoom level must be at least 12.",
-		
-		articlesTitle : "Articles from Kansa taisteli magazines possibly related to",
-		articlesIssue : "Issue",
-		articlesReadPdf : "Read the original article",
-		
-		eventsTitle : "Events related possibly to",
-		eventsViewDataPage : "View event data page", 
-		
-		missingDate : "(missing date)",
-		warsampoLinks : "Related linked data from the <a href='http://seco.cs.aalto.fi/projects/sotasampo/en/' target='_blank'> WarSampo project</a>:",
 		
 		onlyWithLinks: "Search only places with links to WarSampo content",
 };
