@@ -1,3 +1,27 @@
+/*  Federated SPARQL Search Widget
+    Esko Ikkala, SeCo, Aalto University, 12/07/2015
+    http://www.seco.tkk.fi
+*/
+
+(function() {
+	// An immediately-invoked function expression => the code here is executed once in its own scope
+
+$(document).ready(function() {
+	initWidget();
+});	
+	
+// Shared variables
+
+// searchOnlyPlacesWithLinks = true adds a filter for WarSampo datasets (Finnish municipalities 1939-44,
+// Karelian map names 1922-44 and Geographic Names Registry)
+var searchOnlyPlacesWithLinks;
+
+//warsaMode=true means that dropdowns are hidden from typeahead results rows
+var warsaMode;
+
+//Source dataset selections
+var sources = {};
+
 var strings = {
 	
 		warsaMunicipalities: "Finnish municipalities 1939-44",
@@ -66,58 +90,55 @@ var strings = {
 		onlyWithLinks: "Search only places with links to WarSampo content",
 };
 
-var searchOnlyPlacesWithLinks = true;
-var warsaMode = true;
+// Functions for building the widget
 
+function initWidget() {
+	
+	// Set initial sources
+	sources["warsa_municipalities"] = true;
+	sources["warsa_karelian_places"] = true;
+	sources["sapo"] = true;
+	sources["suggested_places"] = true;
+	sources["pnr"] = true;
+	//sources["tgn"] = false;
 
-//Source dataset selections
-var sources = {};
+	// Set strings
+	$("#selection-title").text(strings["selectionTitle"]);
+	$("#title-warsa").text(strings["warsaMunicipalities"]);
+	$("#title-warsa").attr("title", strings["warsaMunicipalitiesLong"]);
+	$("#title-karelian").text(strings["karelianPlaces"]);
+	$("#title-karelian").attr("title", strings["karelianPlacesLong"]);
+	$("#title-pnr").text(strings["pnr"]);
+	$("#title-pnr").attr("title", strings["pnrLong"]);
+	$("#show-places").text(strings["showPlaces"]);
+	$("#show-places-with-links").text(strings["showPlacesWithLinks"]);
+	$("#tab-search-places").text(strings["tabSearchPlaces"]);
+	$("#tab-search-maps").text(strings["tabSearchMaps"]);
+	$("#search-input").attr("placeholder", strings["searchPlaceholder"]);
+	$("#search-only-with-links").append(strings["onlyWithLinks"]);
 
-//Set initial sources
-sources["warsa_municipalities"] = true;
-sources["warsa_karelian_places"] = true;
-sources["sapo"] = true;
-sources["suggested_places"] = true;
-sources["pnr"] = true;
-//sources["tgn"] = false;
+	$("#check-warsa").prop("checked", true);
+	$("#check-karelian").prop("checked", true);
+	$("#check-sapo").prop("checked", true);
+	$("#check-suggested").prop("checked", true);
+	$("#check-pnr").prop("checked", true);
+	//$("#check-tgn").prop("checked", false);
 
-
-$("#selection-title").text(strings["selectionTitle"]);
-$("#title-warsa").text(strings["warsaMunicipalities"]);
-$("#title-warsa").attr("title", strings["warsaMunicipalitiesLong"]);
-$("#title-karelian").text(strings["karelianPlaces"]);
-$("#title-karelian").attr("title", strings["karelianPlacesLong"]);
-$("#title-pnr").text(strings["pnr"]);
-$("#title-pnr").attr("title", strings["pnrLong"]);
-$("#show-places").text(strings["showPlaces"]);
-$("#show-places-with-links").text(strings["showPlacesWithLinks"]);
-$("#tab-search-places").text(strings["tabSearchPlaces"]);
-$("#tab-search-maps").text(strings["tabSearchMaps"]);
-$("#search-input").attr("placeholder", strings["searchPlaceholder"]);
-$("#search-only-with-links").append(strings["onlyWithLinks"]);
-
-initTypeahead();
-initCheckboxes();
-
-$("#check-warsa").prop("checked", true);
-$("#check-karelian").prop("checked", true);
-$("#check-sapo").prop("checked", true);
-$("#check-suggested").prop("checked", true);
-$("#check-pnr").prop("checked", true);
-//$("#check-tgn").prop("checked", false);
-
-
-$("#check-search-only-with-links").prop("checked", true);
-
-$('#check-search-only-with-links').change(function() {
-	if ( $(this).prop("checked") ) {
-		searchOnlyPlacesWithLinks = true;
-	} else {
-		searchOnlyPlacesWithLinks = false;
-	}
-	resetTypeahead();
-});
-
+	searchOnlyPlacesWithLinks = false;
+	$("#check-search-only-with-links").prop("checked", false);
+	warsaMode = true;
+	
+	$('#check-search-only-with-links').change(function() {
+		if ( $(this).prop("checked") ) {
+			searchOnlyPlacesWithLinks = true;
+		} else {
+			searchOnlyPlacesWithLinks = false;
+		}
+		resetTypeahead();
+	});
+	initTypeahead();
+	initCheckboxes();
+}
 
 function initTypeahead() {
 	
@@ -181,27 +202,9 @@ function initTypeahead() {
 	
 						$(".tt-menu").off("click", "#" + data.id);
 						$(".tt-menu").on("click", "#" + data.id, function() {
-							if (data.missing == "") {
-								for (var i = 0; i < warsaMarkers.length; i++) {
-									if (warsaMarkers[i].id == data.id) {
-										history.pushState(null, null, window.location.pathname + "?uri=" + data.uri);
-										var marker = warsaMarkers[i];
-										//console.log(marker.uri);
-										if (data.polygon == "") {
-											queryKtMagazinesOpenIW(marker, false, false);
-										} else {
-											queryKtMagazinesOpenIW(marker, true, false);
-										}
-									}
-								}
-							}
+							window.open(data.uri, "_blank");
 						});
 	
-						$(".tt-menu").off("click", "#" + data.id + "_inside");
-						$(".tt-menu").on("click", "#" + data.id + "_inside", function() {
-							//console.log(data.uri);
-							queryPlacesInsidePolygon(data.uri);
-						});
 						return htmlString;
 					},
 					header: '<h3 class="typeahead-header">'+strings["warsaMunicipalities"]+'</h3>'		
@@ -247,15 +250,7 @@ function initTypeahead() {
 							
 											$(".tt-menu").off("click", "#" + data.id);
 											$(".tt-menu").on("click", "#" + data.id, function() {
-//												if (data.missing == "") {
-													for (var i = 0; i < karelianMarkers.length; i++) {
-														if (karelianMarkers[i].id == data.id) {							
-															history.pushState(null, null, window.location.pathname + "?uri=" + data.uri);
-															var marker = karelianMarkers[i];
-															queryKtMagazinesOpenIW(marker, false, false);
-														}
-													}
-//												}
+												window.open(data.uri, "_blank");
 											});
 											return htmlString;										
 										},
@@ -299,21 +294,7 @@ function initTypeahead() {
 							                 '</div>';
 				
 							$(".tt-menu").on("click", "#" + data.id, function() {
-								if (data.missing == "") {
-									for (var i = 0; i < sapoMarkers.length; i++) {
-										if (sapoMarkers[i].id == data.id) {
-											history.pushState(null, null, window.location.pathname + "?uri=" + data.uri);
-											var marker = sapoMarkers[i];
-											var polygonBounds = marker.getBounds();
-											//map.fitBounds(polygonBounds);
-											info_window.setContent(marker.content);	
-											info_window.setPosition(polygonBounds.getCenter());
-									  		info_window.open(map,marker);
-											//map.panToBounds(warsaMarkers[i].getBounds())
-											
-										}
-									}
-								}
+								window.open(data.uri, "_blank");
 							});
 							return htmlString;										
 						},
@@ -358,18 +339,8 @@ function initTypeahead() {
 										                 '</div>';
 							
 										$(".tt-menu").off("click", "#" + data.id);
-										
 										$(".tt-menu").on("click", "#" + data.id, function() {
-											for (var i = 0; i < suggestedMarkers.length; i++) {
-												if (suggestedMarkers[i].id == data.id) {							
-													history.pushState(null, null, window.location.pathname + "?uri=" + data.uri);
-													var marker = suggestedMarkers[i];
-													//map.panTo(marker.getPosition());
-													//map.setZoom(12);
-													info_window.setContent(marker.content);	
-											  		info_window.open(map,marker);
-												}
-											}
+											window.open(data.uri, "_blank");
 										});
 										return htmlString;										
 									},
@@ -414,14 +385,9 @@ function initTypeahead() {
 										               			dropdown +
 											                 '</div>';
 								
+											$(".tt-menu").off("click", "#" + data.id);
 											$(".tt-menu").on("click", "#" + data.id, function() {
-												for (var i = 0; i < pnrMarkers.length; i++) {
-													if (pnrMarkers[i].id == data.id) {							
-														history.pushState(null, null, window.location.pathname + "?uri=" + data.uri);
-														var marker = pnrMarkers[i];
-														queryKtMagazinesOpenIW(marker, false, false);
-													}
-												}
+												window.open(data.uri, "_blank");
 											});
 											
 											return htmlString;										
@@ -441,56 +407,27 @@ function initTypeahead() {
 		sapo,
 		suggested_places
 	)
-	// Keep tt-menu always open
+	// This keeps tt-menu always open if the query >= minLength  
 	.on('typeahead:beforeclose', function(ev) { 
 		ev.preventDefault(); 
 	})	
 	.on("typeahead:render", function(ev, suggestion, async, dataset) {
-//Functionality for updating the map in HIPLA when suggestions have been rendered
-//		if (!mapSpinner)  {
-//			var target = document.getElementById('map-wrapper');
-//			mapSpinnerInstance.spin(target);
-//			mapSpinner = true;
-//		}
-//		
-//		
-//		// When suggestions are rendered for the first time, start the timer
-//		if (renderCount == 0) {
-//			//$("#instructions").hide(); 
-//			timer();
-//		}	
-//		
-//		// Everytime suggestions for some dataset are rendered, start the timer from the beginning
-//		if (counter != 0) {
-//			counter = 0;
-//		}
-//		
-//		renderCount += 1;
-//		if (renderCount % 10 == 0) {
-//			//$('#search-input').addClass("loading-results");
-//			// When suggestions for 5 datasets are rendered, the map can be updated
-//			canUpdate = true;
-//			
-//		} 
+		// Here it's possible to detect when all suggestions have been rendered
 	})
 	.on("typeahead:asyncrequest", function(ev, query, dataset) {
-		//$(".spinner").css("visibility", "visible");
 		//console.log("typeahead:asyncrequest " + query + dataset);
 	})
+	// Preventing the default click functionality, click functions are defined earlier for each dataset
 	.on("typeahead:asyncreceive", function(ev, query, dataset) {
-		//console.log("typeahead:asyncreceive " + query + dataset);
 		$(".tt-selectable").removeClass("tt-selectable");
+		//console.log("typeahead:asyncreceive " + query + dataset);
 	})
-	.on("typeahead:asynccancel", function(ev, query, dataset) {
-		cancelled = true;
-		//karelianAjaxRequest.abort();
-		//console.debug(ev);
-		//console.debug(karelianAjaxRequest.getResponseHeader());
-		//console.log("typeahead:canceled " + ev + " " + query + " " +  dataset);
-		//clearTimer();
-	})
+	// Preventing the default click functionality
 	.on("typeahead:select", function(ev, suggestion) {
 		ev.preventDefault(); 
+	})
+	.on("typeahead:asynccancel", function(ev, query, dataset) {
+		//console.log("typeahead:canceled " + ev + " " + query + " " +  dataset);
 	})
 	.on("typeahead:open", function(ev, suggestion) {
 		//$("#instructions").hide(); 
@@ -1102,3 +1039,8 @@ function initCheckboxes() {
 //	});
 	
 }
+
+
+})();
+
+
