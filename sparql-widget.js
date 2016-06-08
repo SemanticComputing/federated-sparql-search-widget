@@ -9,7 +9,7 @@
 
 $(document).ready(function() {
 	$("head").append('<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">');
-	$("head").append('<link rel="stylesheet" href="styles.css">');
+	$("head").append('<link rel="stylesheet" href="sparql-widget.css">');
 	$.ajax({
 	  url: "//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js",
 	  dataType: "script",
