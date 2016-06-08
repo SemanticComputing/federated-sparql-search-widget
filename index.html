@@ -4,173 +4,84 @@
 <meta charset="utf-8">
 <title>Federated SPARQL Search Widget</title>
 
-<!-- Bootstrap v3.3.4, compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-<!-- Custom styles -->
-<link rel="stylesheet" href="styles.css">
+<!-- SPARQL widget -->
+<script src="scripts.js"></script>
+
+<script>
+var sparql_widget_config = {
+	"sources": {"warsa-municipalities" : {
+									'title' : "Finnish municipalities 1939-44",
+									'title-long' : "Finnish municipalities 1939-44 (625 municipalities; based on WarSampo dataset)",
+									'endpoint' : "//ldf.fi/warsa/sparql",
+									'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+														"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+														"PREFIX text: <http://jena.apache.org/text#> "+
+														"PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
+														"PREFIX suo: <http://www.yso.fi/onto/suo/> "+
+														"PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
+														"PREFIX spatial: <http://jena.apache.org/spatial#> " +
+														"PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
+														"PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
+														"PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+														"SELECT * "+
+														"WHERE { "+
+														"	GRAPH <http://ldf.fi/warsa/places/municipalities> { "+
+														"		?s "+
+														"			 	text:query (skos:prefLabel 'QUERY*') ; " +
+														"	   		a suo:kunta ; "+
+														"	   		skos:prefLabel ?prefLabel ; "+
+														" 	   	gs:sfWithin ?l . " +
+														"		?l skos:prefLabel ?hierarchyLabel . " +
+														/*"		OPTIONAL { ?s wgs84:lat ?lat ; " +
+														"									wgs84:long ?long . } " +
+														"		OPTIONAL { ?s <http://schema.org/polygon> ?polygon .} " +*/
+														"	} " +
+														"} "+
+														"ORDER BY ?prefLabel "+
+														"LIMIT 100 "},
+							"getty-tgn" : {
+									'title' : "Getty TGN",
+									'title-long' : "The Getty Thesaurus of Geographic Names (TGN)",
+									'endpoint' : "http://vocab.getty.edu/sparql.json",
+									'query' : "PREFIX gvp: <http://vocab.getty.edu/ontology#> " +
+														"PREFIX luc: <http://www.ontotext.com/owlim/lucene#> " +
+														"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+														"PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
+														"PREFIX xl: <http://www.w3.org/2008/05/skos-xl#> " +
+														"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+														"PREFIX wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> " +
+														"SELECT ?s ?prefLabel ?lat ?long ?hierarchyLabel (coalesce(?Type1,?Type2) as ?typeLabel) { " +
+													  "	?s skos:inScheme <http://vocab.getty.edu/tgn/>; " +
+													  "		 luc:term 'QUERY*' ; " +
+														"		 gvp:prefLabelGVP [xl:literalForm ?prefLabel] ; " +
+													  "		 gvp:parentStringAbbrev ?hierarchyLabel ; " +
+													  "    a ?typ . " +
+													  "	?typ rdfs:subClassOf gvp:Subject . " +
+													  "	FILTER (?typ != gvp:Subject) " +
+													  /*"	OPTIONAL {?s foaf:focus ?place . " +
+													  "						?place 	wgs:lat ?lat ; " +
+													  "       	  	   		wgs:long ?long . } " +*/
+													  "OPTIONAL {?s gvp:placeTypePreferred [gvp:prefLabelGVP [xl:literalForm ?Type1]]} " +
+													  "OPTIONAL {?s gvp:agentTypePreferred [gvp:prefLabelGVP [xl:literalForm ?Type2]]} " +
+													  //"OPTIONAL {?s foaf:focus/gvp:biographyPreferred/schema:description ?Descr}
+													  //"OPTIONAL {?s skos:scopeNote [dct:language gvp_lang:en; rdf:value ?ScopeNote]} " +
+														"} " +
+														"ORDER BY ASC(lcase(str(?prefLabel))) " +
+														"LIMIT 100 "}
+	},
+	"callback" : function(data, dataset) {
+									console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+ 							 }
+};
+</script>
 
 </head>
 <body>
 
-<div id="main-content" class="container">
-	
-	<div class="row">
-			<div class="col-md-4">
-				<div id="datasets" class="hipla-only">
-				  	<h4 id="selection-title"></h4>
-	
-				    <div class="row" id="dataset-warsa">
-					    <div class="checkbox pull-left">
-						  <label>
-						    <input id="check-warsa" type="checkbox" value="">
-						  </label>
-						</div>
-					    <div class="dropdown pull-left">
-							  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-<!-- 							    <li><a id="warsa-all" role="button">View all places on current map view</a></li> -->
-							    <li><a href="http://vocab.at/page/bbAl4" target="_blank">Automatic dataset documentation</a></li>
-							  </ul>
-						</div>
-	<!-- 				    <img class="marker_icon pull-left" src="img/warsa-polygon.png" alt="">  -->
-					    <div id="title-warsa" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title=""></div> 
-				    </div>
-				    
-				    <div class="row" id="dataset-karelian">
-					    <div class="checkbox pull-left">
-						  <label>
-						    <input id="check-karelian" type="checkbox" value="">
-						  </label>
-						</div>
-					    <div class="dropdown pull-left hipla-only">
-							  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							    <li>Test</li>
-							  </ul>
-						</div>
-	<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/blue-dot.png" alt="">  -->
-					    <div id="title-karelian" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Karelian places 1922-1944 (~32 000 places)"></div>
-				    </div>
-				   
-				    <div class="row" id="dataset-pnr">
-					    
-					    <div class="checkbox pull-left">
-						  <label>
-						    <input id="check-pnr" type="checkbox" value="">
-						  </label>
-						</div>
-					    
-					    <div class="dropdown pull-left">
-							  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							    <li>Test</li>
-	<!-- 						    <li><a href="" target="_blank">Automatic dataset documentation</a></li> -->
-							  </ul>
-						</div>
-	<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/yellow-dot.png" alt="">  -->
-					    <div id="title-pnr" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Finnish Geographic Names Registry (~800 000 places)"></div>
-					    
-				    </div>
-				   
-	
-				    <div class="row" id="dataset-sapo">
-					    <div class="checkbox pull-left">
-						  <label>
-						    <input id="check-sapo" type="checkbox" value="">
-						  </label>
-						</div>
-					    <div class="dropdown pull-left">
-							  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-<!-- 							    <li><a id="sapo-all" role="button">View all places on map (only places that have a polygon on 1939-12-31)</a></li> -->
-							    <li><a href="http://vocab.at/page/bbzvD" target="_blank">Automatic dataset documentation</a></li>
-							  </ul>
-						</div>
-					    
-	<!-- 				    <img class="marker_icon pull-left" src="img/sapo-polygon.png" alt="">  -->
-					   <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Finnish Spatio-Temporal Ontology (SAPO)">SAPO</div>
-				    </div>	   
-	<!-- 			   	<div class="row hipla-only" id="dataset-tgn"> -->
-					    
-	<!-- 				    <div class="checkbox pull-left"> -->
-	<!-- 					  <label> -->
-	<!-- 					    <input id="check-tgn" type="checkbox" value=""> -->
-	<!-- 					  </label> -->
-	<!-- 					</div> -->
-					    
-	<!-- 				     <div class="dropdown pull-left"> -->
-	<!-- 						  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> -->
-	<!-- 						 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> -->
-	<!-- 						  </button> -->
-	<!-- 						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> -->
-	<!-- 						    <li><a id=tgn-all" role="button">View all places on current map view</a></li> -->
-	<!-- <!-- 						    <li><a href="http://vocab.at/page/bbzBw" target="_blank">Automatic dataset documentation</a></li> --> 
-	<!-- 						  </ul> -->
-	<!-- 					</div> -->
-					    
-	<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/orange-dot.png" alt="">  -->
-	<!-- 				    <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="TGN">TGN</div> -->
-	<!-- 			    </div> -->
-				   
-				   
-				   <div class="row" id="dataset-suggested">    
-					    <div class="checkbox pull-left">
-						  <label>
-						    <input id="check-suggested" type="checkbox" value="">
-						  </label>
-						</div>
-					     <div class="dropdown pull-left">
-							  <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							 	<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-							  </button>
-							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-<!-- 							    <li><a id="suggested-all" role="button">View all places on current map view</a></li> -->
-							    <li><a href="http://vocab.at/page/bbzBw" target="_blank">Automatic dataset documentation</a></li>
-							  </ul>
-						</div> 
-	<!-- 				    <img class="marker_icon pull-left" src="http://maps.google.com/mapfiles/ms/icons/purple-dot.png" alt="">  -->
-					    <div class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="Place suggestions from users">Suggested places</div>
-				    </div>
-
-				</div>	<!-- /#datasets -->
-		
-		
-		
-		
-		
-		
-		
-		
-			<label id="search-only-with-links" class="checkbox-inline">
-  					<input type="checkbox" id="check-search-only-with-links" value="">
-			</label>
-			<div id="#tt-wrapper">
-				<input id="search-input" class="form-control typeahead" type="text" placeholder="Type a place name" name="search-input" >
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-<!-- Bootstrap v3.3.4, compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
-<!-- typeahead.js 0.11.1 -->
-<script src="typeahead.jquery.js"></script>
-
-<!-- Custom JavaScript  -->
-<script src="scripts.js"></script>
+<div class="sparql-widget"/>
 
 </body>
 </html>
