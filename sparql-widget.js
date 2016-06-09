@@ -8,8 +8,6 @@
 	// An immediately-invoked function expression => the code here is executed once in its own scope
 
 $(document).ready(function() {
-	$("head").append('<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">');
-	$("head").append('<link rel="stylesheet" href="sparql-widget.css">');
 	$.ajax({
 	  url: "//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js",
 	  dataType: "script",
@@ -56,6 +54,8 @@ function initTypeahead(pageLoad) {
 	var typeahead_sources = [];
 	$.each(sparql_widget_config['sources'], function(index, element) {
 	  if (pageLoad) {
+			if (!element["title-long"])
+			  element["title-long"] = element["title"];
 			$("#datasets").append('\
 			<div class="row" id="dataset-'+index+'"> \
 				<div class="checkbox pull-left"> \
