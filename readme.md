@@ -39,10 +39,10 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
     ```
     sources:
      source_1:
-      title: short title of the dataset
-      title-long: long title of the dataset
-      endpoint: SPARQL endpoint URL
-      disabled: boolean (default: false), set to true if the source should not be used by default
+      title: short title of the dataset (required)
+      title-long: long title of the dataset (optional)
+      endpoint: SPARQL endpoint URL (required)
+      disabled: boolean (default: false), set to true if the source should not be used by default (optional)
       query: a SPARQL SELECT query with following variables:
        ?s: URI of the item (required)
        ?prefLabel: preferred label of the item (required)
