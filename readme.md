@@ -6,7 +6,7 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
 
 ## How to use the widget
 
-1. Copy the following files into some web location:
+1. Copy the following files into some location on your web server:
 
     ```
     sparql-widget.js
