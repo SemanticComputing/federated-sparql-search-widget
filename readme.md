@@ -13,7 +13,7 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
     sparql-widget.css
     ````
 
-2. Add the following script elements into your web page:
+2. Add the following script and link elements into your web page:
 
    jQuery:
 
@@ -24,6 +24,7 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
    SPARQL widget library:
 
     ```html
+    <link rel="stylesheet" href="[PATH_TO_THE_CSS_FILE]/sparql-widget.css">
     <script src="[PATH_TO_THE_JS_FILE]/sparql-widget.js"></script>
     ```
 
