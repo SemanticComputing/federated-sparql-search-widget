@@ -15,19 +15,20 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
 
 2. Add the following script and link elements into your web page:
 
-   jQuery:
+   Bootstrap and SPARQL widget CSS:
+
+    ```html
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> <!-- or use some other version you prefer -->
+    <link rel="stylesheet" href="[PATH_TO_THE_CSS_FILE]/sparql-widget.css">
+    ```
+
+   jQuery and SPARQL widget JS:
 
     ```html
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> <!-- or use some other version you prefer -->
-    ```
-    
-   SPARQL widget library:
-
-    ```html
-    <link rel="stylesheet" href="[PATH_TO_THE_CSS_FILE]/sparql-widget.css">
     <script src="[PATH_TO_THE_JS_FILE]/sparql-widget.js"></script>
     ```
-
+    
 3. The location of the widget is defined by adding a div element with class "sparql-widget" into the desired part of the page:
 
     ```html
