@@ -22,10 +22,11 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
     <link rel="stylesheet" href="[PATH_TO_THE_CSS_FILE]/sparql-widget.css">
     ```
 
-   jQuery and SPARQL widget JS:
+   jQuery, Bootstrap, and SPARQL widget JS:
 
     ```html
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> <!-- or use some other version you prefer -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> <!-- or use some other version you prefer -->
     <script src="[PATH_TO_THE_JS_FILE]/sparql-widget.js"></script>
     ```
     
