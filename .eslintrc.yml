@@ -14,8 +14,4 @@ rules:
     - always
 env:
   browser: true
-globals:
-    angular: false
 extends: 'eslint:recommended'
-plugins:
-    - angular
