@@ -177,6 +177,7 @@ function querySource(id, config, query, syncResults, asyncResults) {
 		},
 		dataset_id: id,
 		dataType: 'json',
+		headers: {Accept: 'application/sparql-results+json'},
 		success: function(data) {
 			var bindings = data.results.bindings;
 			var matches = new Array();

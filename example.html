@@ -21,7 +21,7 @@
 
 <script>
 var sparql_widget_config = {
-	"sources": {"warsa-municipalities" : {
+	sources: {"warsa-municipalities" : {
 									'title' : "Finnish municipalities 1939-44",
 									'title-long' : "Finnish municipalities 1939-44 (625 municipalities; based on WarSampo dataset)",
 									'endpoint' : "//ldf.fi/warsa/sparql",
@@ -81,7 +81,7 @@ var sparql_widget_config = {
 														"ORDER BY ASC(lcase(str(?prefLabel))) " +
 														"LIMIT 100 "}
 	},
-	"callback" : function(data, dataset) {
+	callback : function(data, dataset) {
 									console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
  							 }
 };
