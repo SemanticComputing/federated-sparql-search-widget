@@ -2,7 +2,7 @@
     Esko Ikkala, SeCo, Aalto University, 12/07/2015
     Jouni Tuominen, SeCo, Aalto University, 08/06/2016
     http://seco.cs.aalto.fi
-    */
+*/
 
 (function($, sparql_widget_config) {
     'use strict';
@@ -61,10 +61,10 @@
                             ' </label> ' +
                         ' </div> ' +
                         ' <div class="dropdown pull-left"> ' +
-                            ' <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> ' +
+                            ' <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu' + index + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> ' +
                                 ' <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> ' +
                             ' </button> ' +
-                            ' <ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> ' +
+                            ' <ul class="dropdown-menu" aria-labelledby="dropdownMenu' + index + '"> ' +
                                 ' <li><a href="'+element['endpoint']+'" target="_blank">'+strings['trySparqlEndpoint']+'</a></li> ' +
                             ' </ul> ' +
                         ' </div> ' +
@@ -134,7 +134,7 @@
                         '</div>';
 
                     var htmlString ='<div class="row" data-preflabel="'+data.value+'" data-polygon="'+data.polygon+'" data-lat="'+data.lat+'" data-long="'+data.long+'" data-id="'+data.id+'" data-uri="'+data.uri+'" data-query="'+data.query+'" data-specifier="'+data.specifier+'">' +
-                        '<a class="result-text pull-left" role="button">' +
+                        '<a class="result-text pull-left" role="button" data-id="' + data.id + '">' +
                         data.value + data.specifier + data.missing +
                         '</a>' +
                         dropdown +
@@ -177,6 +177,7 @@
             },
             dataset_id: id,
             dataType: 'json',
+            headers: { Accept: 'application/sparql-results+json' },
             success: function(data) {
                 var bindings = data.results.bindings;
                 var matches = new Array();

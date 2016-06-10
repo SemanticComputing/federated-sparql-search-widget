@@ -16,9 +16,12 @@
 <!-- jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
+<!-- Bootstrap JS -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 <script>
 var sparql_widget_config = {
-	"sources": {"warsa-municipalities" : {
+	sources: {"warsa-municipalities" : {
 									'title' : "Finnish municipalities 1939-44",
 									'title-long' : "Finnish municipalities 1939-44 (625 municipalities; based on WarSampo dataset)",
 									'endpoint' : "//ldf.fi/warsa/sparql",
@@ -78,12 +81,14 @@ var sparql_widget_config = {
 														"ORDER BY ASC(lcase(str(?prefLabel))) " +
 														"LIMIT 100 "}
 	},
-	"callback" : function(data, dataset) {
+	callback : function(data, dataset) {
 									console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
  							 }
 };
 </script>
 
+</head>
+<body>
 
 <div class="sparql-widget"/></div>
 
