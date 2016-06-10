@@ -35,7 +35,6 @@ function initWidget() {
 	.html('\
 		<div class="row"> \
 			<div class="col-md-4"> \
-				<!--<div id="datasets" class="hipla-only">--> \
 				<div id="datasets"> \
 					<h4 id="selection-title">'+strings["selectionTitle"]+'</h4> \
 				</div> \
@@ -64,10 +63,10 @@ function initTypeahead(pageLoad) {
 					</label> \
 				</div> \
 				<div class="dropdown pull-left"> \
-					<button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> \
+					<button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu'+index+'" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> \
 						<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> \
 					</button> \
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1"> \
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu'+index+'"> \
 						<li><a href="'+element["endpoint"]+'" target="_blank">'+strings["trySparqlEndpoint"]+'</a></li> \
 					</ul> \
 				</div> \
@@ -134,8 +133,8 @@ function initTypeaheadSource(id, config, global_callback) {
 															'</ul>';
 									 '</div>';
 
-					var htmlString ='<div class="row" data-preflabel="'+data.value+'" data-polygon="'+data.polygon+'" data-lat="'+data.lat+'" data-long="'+data.long+'" data-id="'+data.id+'" data-uri="'+data.uri+'" data-query="'+data.query+'" data-specifier="'+data.specifier+'">' +
-											'<a class="result-text pull-left" role="button">' +
+					var htmlString ='<div class="row" data-preflabel="'+data.value+'" data-polygon="'+data.polygon+'" data-lat="'+data.lat+'" data-long="'+data.long+'" data-uri="'+data.uri+'" data-query="'+data.query+'" data-specifier="'+data.specifier+'">' +
+											'<a class="result-text pull-left" role="button" data-id="'+data.id+'">' +
 															data.value + data.specifier + data.missing +
 														'</a>' +
 														dropdown +
