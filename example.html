@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <title>Federated SPARQL Search Widget</title>
 
-<!-- Bootstrap CSS -->
+<!-- Bootstrap -->
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 <!-- SPARQL widget CSS -->
 <link rel="stylesheet" href="sparql-widget.css">
+
+</head>
+<body>
 
 <!-- jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -16,81 +19,83 @@
 <!-- Bootstrap JS -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
 <!-- SPARQL widget JS -->
 <script src="sparql-widget.js"></script>
 
+
 <script>
-var sparql_widget_config = {
-	sources: {"warsa-municipalities" : {
-									'title' : "Finnish municipalities 1939-44",
-									'title-long' : "Finnish municipalities 1939-44 (625 municipalities; based on WarSampo dataset)",
-									'endpoint' : "//ldf.fi/warsa/sparql",
-									'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
-														"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
-														"PREFIX text: <http://jena.apache.org/text#> "+
-														"PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
-														"PREFIX suo: <http://www.yso.fi/onto/suo/> "+
-														"PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
-														"PREFIX spatial: <http://jena.apache.org/spatial#> " +
-														"PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
-														"PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
-														"PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
-														"SELECT * "+
-														"WHERE { "+
-														"	GRAPH <http://ldf.fi/warsa/places/municipalities> { "+
-														"		?s "+
-														"			 	text:query (skos:prefLabel 'QUERY*') ; " +
-														"	   		a suo:kunta ; "+
-														"	   		skos:prefLabel ?prefLabel ; "+
-														" 	   	gs:sfWithin ?l . " +
-														"		?l skos:prefLabel ?hierarchyLabel . " +
-														/*"		OPTIONAL { ?s wgs84:lat ?lat ; " +
-														"									wgs84:long ?long . } " +
-														"		OPTIONAL { ?s <http://schema.org/polygon> ?polygon .} " +*/
-														"	} " +
-														"} "+
-														"ORDER BY ?prefLabel "+
-														"LIMIT 100 "},
-							"getty-tgn" : {
-									'title' : "Getty TGN",
-									'title-long' : "The Getty Thesaurus of Geographic Names (TGN)",
-									'endpoint' : "http://vocab.getty.edu/sparql.json",
-									'query' : "PREFIX gvp: <http://vocab.getty.edu/ontology#> " +
-														"PREFIX luc: <http://www.ontotext.com/owlim/lucene#> " +
-														"PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
-														"PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
-														"PREFIX xl: <http://www.w3.org/2008/05/skos-xl#> " +
-														"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-														"PREFIX wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> " +
-														"SELECT ?s ?prefLabel ?lat ?long ?hierarchyLabel (coalesce(?Type1,?Type2) as ?typeLabel) { " +
-													  "	?s skos:inScheme <http://vocab.getty.edu/tgn/>; " +
-													  "		 luc:term 'QUERY*' ; " +
-														"		 gvp:prefLabelGVP [xl:literalForm ?prefLabel] ; " +
-													  "		 gvp:parentStringAbbrev ?hierarchyLabel ; " +
-													  "    a ?typ . " +
-													  "	?typ rdfs:subClassOf gvp:Subject . " +
-													  "	FILTER (?typ != gvp:Subject) " +
-													  /*"	OPTIONAL {?s foaf:focus ?place . " +
-													  "						?place 	wgs:lat ?lat ; " +
-													  "       	  	   		wgs:long ?long . } " +*/
-													  "OPTIONAL {?s gvp:placeTypePreferred [gvp:prefLabelGVP [xl:literalForm ?Type1]]} " +
-													  "OPTIONAL {?s gvp:agentTypePreferred [gvp:prefLabelGVP [xl:literalForm ?Type2]]} " +
-													  //"OPTIONAL {?s foaf:focus/gvp:biographyPreferred/schema:description ?Descr}
-													  //"OPTIONAL {?s skos:scopeNote [dct:language gvp_lang:en; rdf:value ?ScopeNote]} " +
-														"} " +
-														"ORDER BY ASC(lcase(str(?prefLabel))) " +
-														"LIMIT 100 "}
-	},
-	callback : function(data, dataset) {
-									console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
- 							 }
-};
+$(document).ready(function() {
+  var sparql_widget_config = {
+    sources: {
+      "warsa-municipalities" : {
+        'title' : "Finnish municipalities 1939-44",
+        'title-long' : "Finnish municipalities 1939-44 (625 municipalities; based on WarSampo dataset)",
+        'endpoint' : "//ldf.fi/warsa/sparql",
+        'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+                  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                  "PREFIX text: <http://jena.apache.org/text#> "+
+                  "PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
+                  "PREFIX suo: <http://www.yso.fi/onto/suo/> "+
+                  "PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
+                  "PREFIX spatial: <http://jena.apache.org/spatial#> " +
+                  "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
+                  "PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
+                  "PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+                  "SELECT * "+
+                  "WHERE { "+
+                  "	GRAPH <http://ldf.fi/warsa/places/municipalities> { "+
+                  "		?s "+
+                  "			 	text:query (skos:prefLabel 'QUERY*') ; " +
+                  "	   		a suo:kunta ; "+
+                  "	   		skos:prefLabel ?prefLabel ; "+
+                  " 	   	gs:sfWithin ?l . " +
+                  "		?l skos:prefLabel ?hierarchyLabel . " +
+                  /*"		OPTIONAL { ?s wgs84:lat ?lat ; " +
+                  "									wgs84:long ?long . } " +
+                  "		OPTIONAL { ?s <http://schema.org/polygon> ?polygon .} " +*/
+                  "	} " +
+                  "} "+
+                  "ORDER BY ?prefLabel "+
+                  "LIMIT 100 "},
+      "getty-tgn" : {
+          'title' : "Getty TGN",
+          'title-long' : "The Getty Thesaurus of Geographic Names (TGN)",
+          'endpoint' : "http://vocab.getty.edu/sparql.json",
+          'query' : "PREFIX gvp: <http://vocab.getty.edu/ontology#> " +
+                    "PREFIX luc: <http://www.ontotext.com/owlim/lucene#> " +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+                    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
+                    "PREFIX xl: <http://www.w3.org/2008/05/skos-xl#> " +
+                    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+                    "PREFIX wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#> " +
+                    "SELECT ?s ?prefLabel ?lat ?long ?hierarchyLabel (coalesce(?Type1,?Type2) as ?typeLabel) { " +
+                    "	?s skos:inScheme <http://vocab.getty.edu/tgn/>; " +
+                    "		 luc:term 'QUERY*' ; " +
+                    "		 gvp:prefLabelGVP [xl:literalForm ?prefLabel] ; " +
+                    "		 gvp:parentStringAbbrev ?hierarchyLabel ; " +
+                    "    a ?typ . " +
+                    "	?typ rdfs:subClassOf gvp:Subject . " +
+                    "	FILTER (?typ != gvp:Subject) " +
+                    /*"	OPTIONAL {?s foaf:focus ?place . " +
+                    "						?place 	wgs:lat ?lat ; " +
+                    "       	  	   		wgs:long ?long . } " +*/
+                    "OPTIONAL {?s gvp:placeTypePreferred [gvp:prefLabelGVP [xl:literalForm ?Type1]]} " +
+                    "OPTIONAL {?s gvp:agentTypePreferred [gvp:prefLabelGVP [xl:literalForm ?Type2]]} " +
+                    //"OPTIONAL {?s foaf:focus/gvp:biographyPreferred/schema:description ?Descr}
+                    //"OPTIONAL {?s skos:scopeNote [dct:language gvp_lang:en; rdf:value ?ScopeNote]} " +
+                    "} " +
+                    "ORDER BY ASC(lcase(str(?prefLabel))) " +
+                    "LIMIT 100 "}
+    },
+    callback : function(data, dataset) {
+      console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+    }
+  };
+  var widget = new SparqlSearchWidget(sparql_widget_config);
+});
 </script>
 
-</head>
-<body>
-
 <div class="sparql-widget"/></div>
-
 </body>
 </html>

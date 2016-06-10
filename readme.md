@@ -22,21 +22,22 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
     <link rel="stylesheet" href="[PATH_TO_THE_CSS_FILE]/sparql-widget.css">
     ```
 
-   jQuery, Bootstrap, and SPARQL widget JS:
+   jQuery, Bootstrap, typeahead, and SPARQL widget JS:
 
     ```html
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> <!-- or use some other version you prefer -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> <!-- or use some other version you prefer -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
     <script src="[PATH_TO_THE_JS_FILE]/sparql-widget.js"></script>
     ```
-    
+
 3. The location of the widget is defined by adding a div element with class "sparql-widget" into the desired part of the page:
 
     ```html
     <div class="sparql-widget"></div>
     ```
 
-4. The widget is configured by defining a JavaScript object as a variable "sparql_widget_config" that has the following structure:
+4. The widget is configured by instantiating a SparqlSearchWidget object with a configuration object that has the following structure:
 
     ```
     sources:
