@@ -58,4 +58,4 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
     callback: function(data, dataset): your own function that processes a search result that user selects (the callback functions can also be configured on a per-source basis)
     ```
 
-See index.html for an example.
+See [index.html](index.html) for an example.
