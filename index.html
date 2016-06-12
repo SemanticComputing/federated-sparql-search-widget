@@ -20,6 +20,7 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
 
 <!-- SPARQL widget JS -->
 <script src="sparql-widget.js"></script>
@@ -57,7 +58,8 @@ $(document).ready(function() {
                   "	} " +
                   "} "+
                   "ORDER BY ?prefLabel "+
-                  "LIMIT 100 "},
+                  "LIMIT 100 "
+      },
       "getty-tgn" : {
           'title' : "Getty TGN",
           'title-long' : "The Getty Thesaurus of Geographic Names (TGN)",
@@ -86,16 +88,24 @@ $(document).ready(function() {
                     //"OPTIONAL {?s skos:scopeNote [dct:language gvp_lang:en; rdf:value ?ScopeNote]} " +
                     "} " +
                     "ORDER BY ASC(lcase(str(?prefLabel))) " +
-                    "LIMIT 100 "}
+                    "LIMIT 100 "
+      }
     },
     callback : function(data, dataset) {
       console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
-    }
+    },
+    containerId: 'sparql-widget'
   };
   var widget = new SparqlSearchWidget(sparql_widget_config);
 });
 </script>
 
-<div class="sparql-widget"/></div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="sparql-widget"/></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

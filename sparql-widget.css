@@ -16,7 +16,7 @@
 	overflow-y: auto;
 }
 
-.tt-menu .row, #datasets .row {
+.tt-menu .row, .datasets .row {
 	margin-right:0px;
 	margin-left:0px;
 }
@@ -55,13 +55,13 @@ input[type="checkbox"]{
   cursor:pointer;
 }
 
-#datasets .checkbox {
+.datasets .checkbox {
 	margin-bottom: 0px;
 	margin-top:-2px;
 	margin-right:6px;
 }
 
-#datasets .marker_icon {
+.datasets .marker_icon {
 	width: 25px;
   height: 25px;
   margin-left:6px;
@@ -69,7 +69,7 @@ input[type="checkbox"]{
   margin-top:-2px;
 }
 
-#datasets .row {
+.datasets .row {
 	margin-bottom: 10px;
 }
 
