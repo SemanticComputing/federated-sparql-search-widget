@@ -31,10 +31,10 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
     <script src="[PATH_TO_THE_JS_FILE]/sparql-widget.js"></script>
     ```
 
-3. The location of the widget is defined by adding a div element with class "sparql-widget" into the desired part of the page:
+3. The location of the widget is defined by adding an element with an id (here 'sparql-widget') into the desired part of the page:
 
     ```html
-    <div class="sparql-widget"></div>
+    <div id="sparql-widget"></div>
     ```
 
 4. The widget is configured by instantiating a SparqlSearchWidget object with a configuration object that has the following structure:
@@ -56,6 +56,7 @@ Using jQuery 1.11.3 and Bootstrap v3.3.4 (included from a CDN) for styling the t
      source_n:
      ...
     callback: function(data, dataset): your own function that processes a search result that user selects (the callback functions can also be configured on a per-source basis)
+    containerId: the id of the element in which the widget should be added ('sparql-widget' in the example above)
     ```
 
 See [index.html](index.html) for an example. See the [demo in action](http://semanticcomputing.github.io/federated-sparql-search-widget/).

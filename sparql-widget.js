@@ -29,59 +29,68 @@ window.SparqlSearchWidget = (function($) {
         // Functions for building the widget
 
         function initWidget() {
-            $('.sparql-widget').addClass('container').html(
-                ' <div class="row"> ' +
-                    ' <div class="col-md-4"> ' +
-                        ' <div id="datasets"> ' +
-                            ' <h4 id="selection-title">'+strings['selectionTitle']+'</h4> ' +
-                        ' </div> ' +
-                        ' <div id="#tt-wrapper"> ' +
-                            ' <input id="search-input" placeholder="'+strings['searchPlaceholder']+'" class="form-control typeahead" type="text" name="search-input"> ' +
-                        ' </div> ' +
-                    ' </div> ' +
-                '</div> '
+            self.typeaheadElem = $('<input placeholder="' + strings['searchPlaceholder'] + '" class="form-control typeahead" type="text" />');
+
+            self.datasetContainer = $('<div class="datasets"></div>');
+            self.datasetContainer.html(
+                ' <div class=selection-title-container> ' +
+                    ' <h4 class="selection-title">' + strings['selectionTitle'] + '</h4> ' +
+                ' </div> '
             );
+
+            var inputWrapper = $('<div class="tt-wrapper"></div>');
+            inputWrapper.append(self.typeaheadElem);
+
+            self.widgetContainer = $('#' + self.config.containerId);
+            self.widgetContainer
+                .addClass('sparql-search-widget-container')
+                .append(self.datasetContainer)
+                .append(inputWrapper);
 
             initTypeahead(true);
             initCheckboxes();
         }
 
         function initTypeahead(pageLoad) {
-            var typeahead_sources = [];
-            $.each(self.config['sources'], function(index, element) {
+            var typeaheadSources = [];
+            $.each(self.config.sources, function(datasetId, element) {
                 if (pageLoad) {
                     if (!element['title-long'])
                         element['title-long'] = element['title'];
-                    $('#datasets').append(
-                        ' <div class="row" id="dataset-'+index+'"> ' +
+                    self.datasetContainer.append(
+                        ' <div class="row" id="dataset-' + datasetId + '"> ' +
                             ' <div class="checkbox pull-left"> ' +
                                 ' <label> ' +
-                                    ' <input id="check-'+index+'" type="checkbox" value="" checked="true"> ' +
+                                    ' <input id="check-' + datasetId + '" type="checkbox" value="" checked="true"> ' +
                                 ' </label> ' +
                             ' </div> ' +
                             ' <div class="dropdown pull-left"> ' +
-                                ' <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu' + index + '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> ' +
+                                ' <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu' + datasetId +
+                                        '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> ' +
                                     ' <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> ' +
                                 ' </button> ' +
-                                ' <ul class="dropdown-menu" aria-labelledby="dropdownMenu' + index + '"> ' +
-                                    ' <li><a href="'+element['endpoint']+'" target="_blank">'+strings['trySparqlEndpoint']+'</a></li> ' +
+                                ' <ul class="dropdown-menu" aria-labelledby="dropdownMenu' + datasetId + '"> ' +
+                                    ' <li><a href="' + element['endpoint'] + '" target="_blank">' + strings['trySparqlEndpoint'] + '</a></li> ' +
                                 ' </ul> ' +
                             ' </div> ' +
-                            ' <div id="title-'+index+'" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="'+element['title-long']+'">'+element['title']+'</div> ' +
+                            ' <div id="title-' + datasetId + '" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="' +
+                                    element['title-long'] + '">' +
+                                element['title'] +
+                            '</div> ' +
                         ' </div> '
                     );
                 }
                 if (!element['disabled'])
-                    typeahead_sources.push(initTypeaheadSource(index, element, self.config['callback']));
+                    typeaheadSources.push(initTypeaheadSource(datasetId, element, self.config['callback']));
             });
 
-            $('.typeahead').typeahead(
+            self.typeaheadElem.typeahead(
                 {
                     hint: false,
                     highlight: true,
                     minLength: 2
                 },
-                typeahead_sources
+                typeaheadSources
             )
             // This keeps tt-menu always open if the query >= minLength
             .on('typeahead:beforeclose', function(ev) {
@@ -110,7 +119,7 @@ window.SparqlSearchWidget = (function($) {
             });
         }
 
-        function initTypeaheadSource(id, config, global_callback) {
+        function initTypeaheadSource(id, config, callback) {
 
             var typeahead_source = {
                 name: id,
@@ -124,7 +133,7 @@ window.SparqlSearchWidget = (function($) {
                     suggestion: function(data) {
                         var dropdown =
                             '<div class="btn-group pull-right result-button-g">' +
-                                '<button id="result-dd" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                                '<button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
                                     '<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>' +
                                 '</button>' +
                                 '<ul class="dropdown-menu pull-right">' +
@@ -132,11 +141,14 @@ window.SparqlSearchWidget = (function($) {
                                 '</ul>' +
                             '</div>';
 
-                        var htmlString ='<div class="row" data-preflabel="'+data.value+'" data-polygon="'+data.polygon+'" data-lat="'+data.lat+'" data-long="'+data.long+'" data-id="'+data.id+'" data-uri="'+data.uri+'" data-query="'+data.query+'" data-specifier="'+data.specifier+'">' +
-                            '<a class="result-text pull-left" role="button" data-id="' + data.id + '">' +
-                            data.value + data.specifier + data.missing +
-                            '</a>' +
-                            dropdown +
+                        var htmlString =
+                            '<div class="row" data-preflabel="' + data.value + '" data-polygon="' + data.polygon +
+                                    '" data-lat="' + data.lat + '" data-long="' + data.long + '" data-id="' + data.id +
+                                    '" data-uri="' + data.uri + '" data-query="' + data.query + '" data-specifier="' + data.specifier + '">' +
+                                '<a class="result-text pull-left" role="button" data-id="' + data.id + '">' +
+                                    data.value + data.specifier + data.missing +
+                                '</a>' +
+                                dropdown +
                             '</div>';
 
                         var dataset = {};
@@ -147,8 +159,8 @@ window.SparqlSearchWidget = (function($) {
                         $('.tt-menu').on('click', '[data-id="' + data.id + '"]', function() {
                             if (config['callback'])
                                 config['callback'](data, dataset);
-                            else if (global_callback)
-                                global_callback(data, dataset);
+                            else if (callback)
+                                callback(data, dataset);
                             else
                                 console.log(data.value + ' (' + data.uri + '; ' + dataset.title + '; ' + dataset.endpoint);
                         });
@@ -162,10 +174,10 @@ window.SparqlSearchWidget = (function($) {
         }
 
         function resetTypeahead() {
-            var theVal = $('.typeahead').val();
-            $('.typeahead').typeahead('destroy');
+            var theVal = self.typeaheadElem.val();
+            self.typeaheadElem.typeahead('destroy');
             initTypeahead();
-            $('.typeahead').focus().typeahead('val',theVal).focus();
+            self.typeaheadElem.focus().typeahead('val',theVal).focus();
         }
 
         function querySource(id, config, query, syncResults, asyncResults) {
@@ -179,7 +191,7 @@ window.SparqlSearchWidget = (function($) {
                 headers: { Accept: 'application/sparql-results+json' },
                 success: function(data) {
                     var bindings = data.results.bindings;
-                    var matches = new Array();
+                    var matches = [];
                     if (bindings.length > 0) {
                         for (var i=0; i<bindings.length; i++) {
 
@@ -225,7 +237,7 @@ window.SparqlSearchWidget = (function($) {
         }
 
         function initCheckboxes() {
-            $('#datasets input:checkbox').change(function() {
+            self.datasetContainer.find('input:checkbox').change(function() {
                 var source_id = $(this).attr('id').replace('check-', '');
                 if ( $(this).prop('checked') ) {
                     self.config['sources'][source_id].disabled = false;
