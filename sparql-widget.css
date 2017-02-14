@@ -93,13 +93,14 @@ padding-left:20px;
 }
 
 .row-input-field {
-	padding-bottom:20px;
-	padding-top:20px;
-	border-bottom: 1px solid grey;
+	/*padding-bottom:20px;*/
+	/*padding-top:20px;*/
+	/*border-bottom: 1px solid grey;*/
+		max-width: 750px;
 	/*width:80%;*/
 }
 
 .sparql-search-widget-container {
-	margin-top:40px;
+	margin-top:30px;
 	max-width: 750px;
 }
