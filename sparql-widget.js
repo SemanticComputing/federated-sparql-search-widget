@@ -117,10 +117,10 @@ window.SparqlSearchWidget = (function($) {
                 },
                 typeaheadSources
             )
-            // This keeps tt-menu always open if the query >= minLength
-            .on('typeahead:beforeclose', function(ev) {
-                ev.preventDefault();
-            })
+            // // This keeps tt-menu always open if the query >= minLength
+            // .on('typeahead:beforeclose', function(ev) {
+            //     ev.preventDefault();
+            // })
             .on('typeahead:render', function(ev, suggestion, async, dataset) {
                 // Here it's possible to detect when all suggestions have been rendered
             })
