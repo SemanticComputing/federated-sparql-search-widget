@@ -13,7 +13,7 @@ window.SparqlSearchWidget = (function($) {
         // UI strings
         var strings = {
             selectionTitle: 'Select source dataset(s)',
-            searchPlaceholder: 'Type at least two letters, e.g. Kivennapa',
+            searchPlaceholder: 'Type at least two letters',
             browseLinkedData: 'Browse Linked Data',
             trySparqlEndpoint: 'Try SPARQL endpoint',
             typeaheadEmpty : 'No results.',
@@ -29,55 +29,80 @@ window.SparqlSearchWidget = (function($) {
         // Functions for building the widget
 
         function initWidget() {
-            self.typeaheadElem = $('<input placeholder="' + strings['searchPlaceholder'] + '" class="form-control typeahead" type="text" />');
 
-            self.datasetContainer = $('<div class="datasets"></div>');
+            var inputId = self.config.containerId + '-input';
+            self.typeaheadElem = $('<label for=" '+ inputId +' ">' + self.config.inputLabel +'</label><input id="'+ inputId +'" placeholder="' + strings['searchPlaceholder'] + '" class="form-control typeahead" type="text" />');
+
+            self.datasetContainer = $('<div class="source-options pull-left"></div>');
             self.datasetContainer.html(
-                ' <div class=selection-title-container> ' +
-                    ' <h4 class="selection-title">' + strings['selectionTitle'] + '</h4> ' +
-                ' </div> '
+              '<div class="row"> ' +
+                  '<div class="col-lg-12"> ' +
+                    '<div class="button-group"> ' +
+                      '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-cog"></span> Select sources  <span class="caret"></span></button>' +
+                        '<ul class="dropdown-menu dropdown-datasets">' +
+                        '</ul>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>'
             );
 
-            var inputWrapper = $('<div class="tt-wrapper"></div>');
+            //self.datasetContainer = $('<div class="datasets"></div>');
+            //self.datasetContainer.html(
+            //    ' <div class=selection-title-container> ' +
+            //        ' <h4 class="selection-title">' + strings['selectionTitle'] + '</h4> ' +
+            //    ' </div> '
+            //);
+
+            var inputWrapper = $('<div class="tt-wrapper pull-left"></div>');
             inputWrapper.append(self.typeaheadElem);
 
             self.widgetContainer = $('#' + self.config.containerId);
             self.widgetContainer
                 .addClass('sparql-search-widget-container')
-                .append(self.datasetContainer)
+                //.append(self.datasetContainer)
                 .append(inputWrapper);
 
             initTypeahead(true);
+
+            inputWrapper.after(self.datasetContainer);
+
             initCheckboxes();
         }
 
         function initTypeahead(pageLoad) {
             var typeaheadSources = [];
+            //console.log(self.config.sources);
             $.each(self.config.sources, function(datasetId, element) {
                 if (pageLoad) {
                     if (!element['title-long'])
                         element['title-long'] = element['title'];
-                    self.datasetContainer.append(
-                        ' <div class="row" id="dataset-' + datasetId + '"> ' +
-                            ' <div class="checkbox pull-left"> ' +
-                                ' <label> ' +
-                                    ' <input id="check-' + datasetId + '" type="checkbox" value="" checked="true"> ' +
-                                ' </label> ' +
-                            ' </div> ' +
-                            ' <div class="dropdown pull-left"> ' +
-                                ' <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu' + datasetId +
-                                        '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> ' +
-                                    ' <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> ' +
-                                ' </button> ' +
-                                ' <ul class="dropdown-menu" aria-labelledby="dropdownMenu' + datasetId + '"> ' +
-                                    ' <li><a href="' + element['endpoint'] + '" target="_blank">' + strings['trySparqlEndpoint'] + '</a></li> ' +
-                                ' </ul> ' +
-                            ' </div> ' +
-                            ' <div id="title-' + datasetId + '" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="' +
-                                    element['title-long'] + '">' +
-                                element['title'] +
-                            '</div> ' +
-                        ' </div> '
+
+                    self.datasetContainer.find('.dropdown-datasets').append(
+
+                        '<li><a href="#" class="small" data-value="'+datasetId+'" tabIndex="-1"><input id="check-' + datasetId + '" type="checkbox" checked="true" />&nbsp;'+ element['title'] +'</a></li>'
+
+
+
+                        // ' <div class="row" id="dataset-' + datasetId + '"> ' +
+                        //     ' <div class="checkbox pull-left"> ' +
+                        //         ' <label> ' +
+                        //             ' <input id="check-' + datasetId + '" type="checkbox" value="" checked="true"> ' +
+                        //         ' </label> ' +
+                        //     ' </div> ' +
+                        //     ' <div class="dropdown pull-left"> ' +
+                        //         ' <button class="btn btn-primary btn-xs dropdown-toggle" type="button" id="dropdownMenu' + datasetId +
+                        //                 '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> ' +
+                        //             ' <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> ' +
+                        //         ' </button> ' +
+                        //         ' <ul class="dropdown-menu" aria-labelledby="dropdownMenu' + datasetId + '"> ' +
+                        //             ' <li><a href="' + element['endpoint'] + '" target="_blank">' + strings['trySparqlEndpoint'] + '</a></li> ' +
+                        //         ' </ul> ' +
+                        //     ' </div> ' +
+                        //     ' <div id="title-' + datasetId + '" class="pull-left dataset-title" data-toggle="tooltip" data-placement="right" title="' +
+                        //             element['title-long'] + '">' +
+                        //         element['title'] +
+                        //     '</div> ' +
+                        // ' </div> '
                     );
                 }
                 if (!element['disabled'])
@@ -246,7 +271,8 @@ window.SparqlSearchWidget = (function($) {
                 }
                 resetTypeahead();
             });
+
         }
-    }
+      }
 /* global jQuery */
 })(jQuery);

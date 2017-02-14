@@ -94,7 +94,8 @@ $(document).ready(function() {
     callback : function(data, dataset) {
       console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
     },
-    containerId: 'sparql-widget'
+    containerId: 'sparql-widget',
+    inputLabel: 'Select place:'
   };
   var widget = new SparqlSearchWidget(sparql_widget_config);
 });

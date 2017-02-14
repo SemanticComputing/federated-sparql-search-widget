@@ -1,6 +1,10 @@
-.twitter-typeahead, .tt-input {
-	width:100%;
+.tt-wrapper {
+	width:80%;
+}
 
+.twitter-typeahead, .tt-input {
+	/*float:left;*/
+	width:100%;
 }
 
 .tt-menu {
@@ -38,7 +42,7 @@
   font-size: 16px;
   line-height: 22px;
   margin-top:0px;
-  margin-bottom:0px;
+  margin-bottom:1px;
 }
 
 .result-text {
@@ -49,13 +53,17 @@
 	padding-left:10px;
 }
 
-input[type="checkbox"]{
+.result-button-g {
+	margin-right:10px;
+}
+
+/*input[type="checkbox"]{
   width: 20px;
   height: 20px;
   cursor:pointer;
-}
+}*/
 
-.datasets .checkbox {
+/*.datasets .checkbox {
 	margin-bottom: 0px;
 	margin-top:-2px;
 	margin-right:6px;
@@ -76,4 +84,21 @@ input[type="checkbox"]{
 .dataset-title {
 	margin-left:10px;
 	line-height: 1.8;
+}*/
+
+.source-options {
+	padding-top:27px;
+padding-left:20px;
+
+}
+
+.row-input-field {
+	padding-bottom:20px;
+	padding-top:20px;
+	border-bottom: 1px solid grey;
+	/*width:80%;*/
+}
+
+.letter-editor {
+	max-width: 750px;
 }
