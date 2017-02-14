@@ -99,6 +99,7 @@ padding-left:20px;
 	/*width:80%;*/
 }
 
-.letter-editor {
+.sparql-search-widget-container {
+	margin-top:40px;
 	max-width: 750px;
 }
