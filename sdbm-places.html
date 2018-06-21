@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Federated SPARQL Search Widget</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- SPARQL widget CSS -->
+<link rel="stylesheet" href="sparql-widget.css">
+
+</head>
+<body>
+
+<!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+
+<!-- SPARQL widget JS -->
+<script src="sparql-widget.js"></script>
+
+<script>
+$(document).ready(function() {
+  var sparql_widget_config = {
+    sources: {
+      "sdbm-places" : {
+        'title' : "Schoenberg Database of Manuscripts - Places",
+        'title-long' : "Schoenberg Database of Manuscripts - Places",
+        'endpoint' : "//ldf.fi/mmm-sdbm/sparql",
+        'query' : "PREFIX sdbm: <https://sdbm.library.upenn.edu/>" +
+                  "SELECT * "+
+                  "WHERE { "+
+                  "  ?s "+
+                  "	 		a sdbm:places ; " +
+                  "	 		sdbm:places_name ?prefLabel ; " +
+                  "  FILTER(REGEX(?prefLabel, '^QUERY.*', 'i'))" +
+                  " ?s sdbm:places_id ?typeLabel . " +
+                  "} "+
+                  "ORDER BY ?label " +
+                  "LIMIT 100 "
+      }
+    },
+    callback : function(data, dataset) {
+      window.open(data.uri, '_blank');
+      //console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+    },
+    containerId: 'sparql-widget',
+    inputLabel: 'Search places:'
+  };
+  var widget = new SparqlSearchWidget(sparql_widget_config);
+});
+</script>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div id="sparql-widget"/></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
