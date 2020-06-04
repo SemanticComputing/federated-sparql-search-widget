@@ -209,7 +209,7 @@ window.SparqlSearchWidget = (function($) {
             $.ajax({
                 url: config['endpoint'],
                 data: {
-                    query: config['query'].replace('QUERY', query)
+                    query: config['query'].replace(/QUERY/g, query)
                 },
                 dataset_id: id,
                 dataType: 'json',
