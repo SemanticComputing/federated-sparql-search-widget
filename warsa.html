@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Federated SPARQL Search Widget</title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- SPARQL widget CSS -->
+<link rel="stylesheet" href="sparql-widget.css">
+
+</head>
+<body>
+
+<!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.min.js"></script>
+
+<!-- SPARQL widget JS -->
+<script src="sparql-widget.js"></script>
+
+<script>
+$(document).ready(function() {
+
+  var sparql_persons_widget_config = {
+    sources: {
+      "warsa-persons" : {
+        'title' : "Sotasammon henkilöt",
+        'endpoint' : "//ldf.fi/warsa/sparql",
+        'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+                  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                  "PREFIX text: <http://jena.apache.org/text#> "+
+                  "PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
+                  "PREFIX suo: <http://www.yso.fi/onto/suo/> "+
+                  "PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
+                  "PREFIX spatial: <http://jena.apache.org/spatial#> " +
+                  "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
+                  "PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
+                  "PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+                  "PREFIX warsas: <http://ldf.fi/schema/warsa/> " +
+                  "SELECT * "+
+                  "WHERE { "+
+                  "		?s "+
+                  "			 	text:query (skos:prefLabel 'QUERY*') ; " +
+                  "       a warsas:Person ; "+
+                  "	   		skos:prefLabel ?prefLabel ; "+
+                  "} "+
+                  "ORDER BY ?prefLabel "+
+                  "LIMIT 100 "
+      }
+    },
+    callback : function(data, dataset) {
+      console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+    },
+    containerId: 'sparql-persons-widget',
+    inputLabel: 'Etsi henkilöä:'
+  };
+
+  var sparql_places_widget_config = {
+    sources: {
+      "warsa-places" : {
+        'title' : "Sotasammon paikat: kunnat ja kylät",
+        'endpoint' : "//ldf.fi/warsa/sparql",
+        'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+                  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                  "PREFIX text: <http://jena.apache.org/text#> "+
+                  "PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
+                  "PREFIX suo: <http://www.yso.fi/onto/suo/> "+
+                  "PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
+                  "PREFIX spatial: <http://jena.apache.org/spatial#> " +
+                  "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
+                  "PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
+                  "PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+                  "PREFIX warsas: <http://ldf.fi/schema/warsa/> " +
+                  "SELECT * "+
+                  "WHERE { "+
+                  "		?s "+
+                  "			 	text:query (skos:prefLabel 'QUERY*') ; " +
+                  "       a ?class ; "+
+                  "	   		skos:prefLabel ?prefLabel ; "+
+                  " 	   	gs:sfWithin ?l . " +
+                  "   FILTER ( ?class = suo:kunta || ?class = warsas:Village ) "+
+                  "		?l skos:prefLabel ?hierarchyLabel . " +
+                  /*"		OPTIONAL { ?s wgs84:lat ?lat ; " +
+                  "									wgs84:long ?long . } " +
+                  "		OPTIONAL { ?s <http://schema.org/polygon> ?polygon .} " +*/
+                  "} "+
+                  "ORDER BY ?prefLabel "+
+                  "LIMIT 100 "
+      }
+    },
+    callback : function(data, dataset) {
+      console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+    },
+    containerId: 'sparql-places-widget',
+    inputLabel: 'Etsi paikkaa:'
+  };
+
+  var sparql_events_widget_config = {
+    sources: {
+      "warsa-events" : {
+        'title' : "Sotasammon tapahtumat",
+        'endpoint' : "//ldf.fi/warsa/sparql",
+        'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+                  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                  "PREFIX text: <http://jena.apache.org/text#> "+
+                  "PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
+                  "PREFIX suo: <http://www.yso.fi/onto/suo/> "+
+                  "PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
+                  "PREFIX spatial: <http://jena.apache.org/spatial#> " +
+                  "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
+                  "PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
+                  "PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+                  "PREFIX warsas: <http://ldf.fi/schema/warsa/> " +
+                  "SELECT * "+
+                  "WHERE { "+
+                  "		?s "+
+                  "			 	text:query (skos:prefLabel 'QUERY*') ; " +
+                  "       a warsas:Event ; "+
+                  "	   		skos:prefLabel ?prefLabel ; "+
+                  "} "+
+                  "ORDER BY ?prefLabel "+
+                  "LIMIT 100 "
+      }
+    },
+    callback : function(data, dataset) {
+      console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+    },
+    containerId: 'sparql-events-widget',
+    inputLabel: 'Etsi tapahtumaa:'
+  };
+
+  var sparql_subjects_widget_config = {
+    sources: {
+      "koko" : {
+        'title' : "KOKO-ontologia",
+        'endpoint' : "//api.finto.fi/sparql",
+        'query' : "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+                  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                  "PREFIX text: <http://jena.apache.org/text#> "+
+                  "PREFIX hipla: <http://ldf.fi/schema/hipla/> " +
+                  "PREFIX suo: <http://www.yso.fi/onto/suo/> "+
+                  "PREFIX gs: <http://www.opengis.net/ont/geosparql#> " +
+                  "PREFIX spatial: <http://jena.apache.org/spatial#> " +
+                  "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> " +
+                  "PREFIX articles: <http://ldf.fi/warsa/articles/article/>" +
+                  "PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>" +
+                  "PREFIX warsas: <http://ldf.fi/schema/warsa/> " +
+                  "SELECT * "+
+                  "WHERE { "+
+                  "	GRAPH <http://www.yso.fi/onto/koko/> { "+
+                  "		?s "+
+                  "			 	text:query (skos:prefLabel 'QUERY*' 'lang:fi') ; " +
+                  "	   		skos:prefLabel ?prefLabel ; "+
+                  "   FILTER ( langMatches(lang(?prefLabel), 'fi') ) " +
+                  "	} " +
+                  "} "+
+                  "ORDER BY ?prefLabel "+
+                  "LIMIT 100 "
+      }
+    },
+    callback : function(data, dataset) {
+      console.log(data.value + " (" + data.uri + "; " + dataset.title + "; " + dataset.endpoint);
+    },
+    containerId: 'sparql-subjects-widget',
+    inputLabel: 'Etsi asiasanaa:'
+  };
+
+  var widget = new SparqlSearchWidget(sparql_persons_widget_config);
+  var widget = new SparqlSearchWidget(sparql_places_widget_config);
+  var widget = new SparqlSearchWidget(sparql_events_widget_config);
+  var widget = new SparqlSearchWidget(sparql_subjects_widget_config);
+
+});
+</script>
+
+<div class="container">
+  <div class="row row-input-field">
+    <div id="sparql-persons-widget"></div>
+  </div>
+  <div class="row row-input-field">
+    <div id="sparql-places-widget"></div>
+  </div>
+  <div class="row row-input-field">
+    <div id="sparql-events-widget"></div>
+  </div>
+  <div class="row row-input-field">
+    <div id="sparql-subjects-widget"></div>
+  </div>
+</div>
+</body>
+</html>
